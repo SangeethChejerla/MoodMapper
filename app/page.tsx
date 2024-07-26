@@ -1,113 +1,111 @@
-import Image from "next/image";
+"use client";
+import { RingLoader } from "react-spinners";
+import axios from "axios";
+import { ChangeEvent, useEffect, useState, Suspense } from "react";
+import { emotionConfig } from "./config";
+import Slip from "@/components/slip";
+
+// Define the type for emotion keys
+type EmotionKey = keyof typeof emotionConfig;
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+  const defaultColor = "#cccccc";
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+  // State Variables
+  const [rows, setRows] = useState(2);
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState<{ label: EmotionKey; score: number }[]>(
+    []
   );
+  const [loading, setLoading] = useState(false);
+  const [color, setColor] = useState(defaultColor);
+  const [tagsVisible, setTagsVisible] = useState(false);
+
+  useEffect(() => {
+    const inputTimeout = setTimeout(() => {
+      runPredictions();
+    }, 1000);
+    return () => clearTimeout(inputTimeout);
+  }, [input]);
+
+  useEffect(() => {
+    handleColor();
+    setTagsVisible(true);
+  }, [output]);
+
+  function handleColor() {
+    if (output && output.length > 0) {
+      const colorKey: EmotionKey = output[0].label;
+      const colorHex = emotionConfig[colorKey].colorHex;
+      setColor(colorHex);
+    }
+  }
+
+  async function runPredictions() {
+    if (input) {
+      setLoading(true);
+      setTagsVisible(false);
+
+      const res = await axios.post("api/emotion", { input: input });
+      console.log(res);
+      setOutput(res.data.filteredResponse);
+      setLoading(false);
+    }
+  }
+
+  function handleInputChange(event: ChangeEvent<HTMLTextAreaElement>): void {
+    setInput(event.target.value);
+    // Increase the number of rows if required
+    const newRows = Math.max(2, Math.ceil(event.target.scrollHeight / 20));
+    setRows(newRows);
+  }
+
+  return (
+    <Suspense fallback={renderLoader()}>
+      <main
+        style={{ backgroundColor: color + "aa" }}
+        className="transition-all delay-500 gap-6 flex min-h-screen flex-col items-center p-12"
+      >
+        <h1 className="lg:text-5xl text-3xl font-bold tracking-tight text-gray-900 mb-8">
+        🧠 Mood Mapper 
+        </h1>
+        <div className="w-full max-w-2xl border-2 border-gray-300 p-6 rounded-lg shadow-md bg-white">
+        <textarea
+          rows={rows}
+          onChange={handleInputChange}
+          placeholder="type how you feel . . ."
+          className="resize-none outline-none block w-full text-sm placeholder-slate-600 bg-transparent"
+        >
+
+        </textarea>
+        </div>
+        <Slip input={input}>
+          Express your words here and let us help map your mood.
+        </Slip>
+        <div className="flex flex-wrap items-center justify-center gap-4 mt-6">
+          {output?.map(({ label, score }) => {
+            return (
+              <span
+              key={label}
+              className={`${
+                tagsVisible ? 'opacity-100' : 'opacity-0'
+              } transition-opacity duration-300 cursor-pointer bg-indigo-100 text-indigo-800 text-lg px-4 py-1 rounded-full border border-indigo-400 shadow-lg hover:bg-indigo-200 hover:border-indigo-500`}
+            >
+              {label} {emotionConfig[label].emoji}
+            </span>
+            );
+          })}
+        </div>
+        {loading && renderLoader()}
+      </main>
+    </Suspense>
+  );
+
+  function renderLoader() {
+    return (
+      <div className="flex justify-center items-center mt-6">
+        <RingLoader size={50} color="#4A90E2" />
+      </div>
+    );
+  }
 }
